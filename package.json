@@ -8,8 +8,11 @@
     "build": "rimraf dist && webpack -p --progress --hide-modules"
   },
   "dependencies": {
+    "alice-poptip": "^1.3.0",
+    "dayjs": "^1.11.3",
     "element-ui": "^2.15.7",
     "lib-flexible": "^0.3.2",
+    "lodash": "^4.17.21",
     "postcss-px2rem": "^0.3.0",
     "px2rem-loader": "^0.1.9",
     "vue": "^2.5.16",

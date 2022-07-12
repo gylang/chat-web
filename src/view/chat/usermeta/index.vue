@@ -1,6 +1,6 @@
 <template>
   <div class="um_header">
-    <el-tag>DaWens(32)</el-tag>
+    <div class="um-name">DaWens(32)</div>
   </div>
 </template>
 
@@ -16,5 +16,17 @@ export default {
 <style scoped>
  .um_header{
    float: left;
+   height: 40px;
+
+ }
+ .um-name{
+   margin-left: 10px;
+   font-size: 18px;
+   text-align: center;
+   display: flex;
+   height: 40px;
+   align-content: space-around;
+   flex-direction: row-reverse;
+   flex-wrap: wrap;
  }
 </style>

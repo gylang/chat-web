@@ -1,0 +1,45 @@
+.margin-0 {
+    margin: 0;
+}
+
+.padding-0 {
+    padding: 0;
+}
+
+.padding-left-0 {
+    padding-left: 0;
+}
+
+.margin-left-5 {
+    margin-left: 5px;
+}
+
+.margin-right-5 {
+    margin-right: 5px;
+}
+.margin-bottom-5 {
+    margin-bottom: 5px;
+}
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.float-left {
+
+    float: left;
+}
+.float-right {
+
+    float: right;
+}
+
+.display-block {
+    display: block;
+}
+
+.h-20 {
+  height: 20px;
+}
+.h-30 {
+  height: 30px;
+}
