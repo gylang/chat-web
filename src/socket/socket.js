@@ -14,6 +14,8 @@ function SocketClient() {
     // 心跳定时任务
     let heartTask;
 
+    let translator;
+
 
     this.setAddress = function (address) {
         socketAddress = address
@@ -106,6 +108,10 @@ function SocketClient() {
         status = WebSocket.CLOSING
     }
 
+    /**
+     * 监听到消息
+     * @param msg
+     */
     this.onMessage = function (msg) {
         for (let listener in listenerPool) {
             listener.call(msg)
@@ -137,30 +143,36 @@ function SocketClient() {
         console.log(socket)
         socket.send(JSON.stringify(message));
     }
-    /**
-     * tcp 连接登录
-     * @param token 用户登录返回的token
-     */
-    this.login = function (token) {
 
-        socket.send(
-            JSON.stringify(loginMsg)
-        )
-    }
+    /**
+     * 关闭连接
+     */
     this.close = function () {
         console.log("socket已经关闭")
         status = WebSocket.CLOSED
     }
+    /**
+     * 销毁链接
+     */
     this.destroyed = function () {
         // 销毁监听
         socket.onclose = this.close;
         clearInterval(heartTask);
     }
 
+    this.wrap = function (message) {
+
+        translator.tobyte(message)
+    }
 
 }
 
 
+/**
+ * 监听器
+ * @param listener
+ * @constructor
+ */
 function Listener(listener) {
 
     // 回调post方法
