@@ -1,3 +1,5 @@
+import {Snowflake} from "~/util/msgId";
+
 function SocketClient() {
     // 监听池
     let listenerPool = new Array(10)
@@ -14,11 +16,15 @@ function SocketClient() {
     // 心跳定时任务
     let heartTask;
 
-    let translator;
+    let translatorImpl;
 
+    let snowflake = new Snowflake(1n, 1n, 0n);
 
     this.setAddress = function (address) {
         socketAddress = address
+    }
+    this.setTranslator = function (translator) {
+        translatorImpl = translator
     }
 
     /**
@@ -123,26 +129,11 @@ function SocketClient() {
      * @param message
      */
     this.send = function (message) {
-        if (null == message.clientMsgId) {
-            message.clientMsgId = new Date().getTime();
-        }
-        if (-2 !== message.type) {
-            // 走qos 判读
-        }
-        if (0 !== message) {
-            clientSenderSendQosHandler.addReceived(message);
-        }
+
         this.write(message)
     }
 
-    /**
-     * 发送消息
-     * @param message 消息体
-     */
-    this.write = function (message) {
-        console.log(socket)
-        socket.send(JSON.stringify(message));
-    }
+
 
     /**
      * 关闭连接
@@ -160,11 +151,24 @@ function SocketClient() {
         clearInterval(heartTask);
     }
 
-    this.wrap = function (message) {
+    this.wrapMessage = function (message) {
 
-        translator.tobyte(message)
+        let body = translatorImpl.tobyte(message)
+        let translator = message.translator || 1;
+        let inLabel = message.inLabel || 0;
+        let ack = message.ack || 0;
+        let qos = message.qos || 0;
+        let cmd = message.cmd;
+        let messageId = message.messageId || snowflake.getId();
+        return translator + ',' + inLabel + ',' + ack + ',' + qos + ',' + cmd + ',' + messageId + ',' + body
     }
-
+    /**
+     * 发送消息
+     * @param message 消息体
+     */
+    this.write = function (message) {
+        socket.send(this.wrapMessage(message));
+    }
 }
 
 

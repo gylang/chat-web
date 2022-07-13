@@ -56,7 +56,7 @@
             v-model="inputText"
             maxlength="400"
             resize="none"
-            :rows="7"
+            :rows="6"
             show-word-limit
         ></el-input>
       </div>
@@ -197,36 +197,36 @@ export default {
 
 <style scoped>
 .c-container {
-  margin: 100px 100px 100px;
+  margin: 50px 100px 100px;
   width: 1600px;
-  height: 810px;
+  height: 760px;
   border: 1px solid;
 }
 
 .contact-tab {
   width: 401px;
-  height: 810px;
+  height: 710px;
   float: left;
   border-right: 1px solid;
 }
 
 .chat-tab {
   width: 1000px;
-  height: 810px;
+  height: 710px;
   float: left;
   border-right: 1px solid;
 }
 
 .function-tab {
   width: 60px;
-  height: 810px;
+  height: 710px;
   float: left;
   border-right: 1px solid;
 }
 
 .contact-list-tab {
   width: 340px;
-  height: 810px;
+  height: 710px;
   float: left;
 
 }
@@ -239,7 +239,7 @@ export default {
 
 .contact-list-content {
   width: 340px;
-  height: 760px;
+  height: 710px;
 }
 
 .chat-header {
@@ -250,14 +250,14 @@ export default {
 
 .chat-content {
   width: 1000px;
-  height: 550px;
+  height: 520px;
   border-bottom: 1px solid;
 
 }
 
 .chat-send-tab {
   width: 1000px;
-  height: 150px;
+  height: 138px;
 
 }
 
@@ -281,6 +281,6 @@ export default {
   border-bottom: 1px solid;
 }
 .nowChatList{
-  height: 755px;
+  height: 695px;
 }
 </style>

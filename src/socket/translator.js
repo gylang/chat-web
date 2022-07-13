@@ -1,7 +1,8 @@
 function JsonTranslator() {
 
-    this.toByte = function (message) {
+
+
+    this.toStr = function (message) {
         var jsonStr = JSON.stringify(message);
-        jsonStr.
     }
 }
