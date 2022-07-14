@@ -3,22 +3,22 @@ export const randomLenNum = (len, date) => {
 }
 export const Snowflake = /** @class */ (function() {
     function Snowflake(_workerId, _dataCenterId, _sequence) {
-        this.twepoch = 1288834974657n;
-        //this.twepoch = 0n;
-        this.workerIdBits = 5n;
-        this.dataCenterIdBits = 5n;
-        this.maxWrokerId = -1n ^ (-1n << this.workerIdBits); // 值为：31
-        this.maxDataCenterId = -1n ^ (-1n << this.dataCenterIdBits); // 值为：31
-        this.sequenceBits = 12n;
+        this.twepoch = 1288834974657;
+        //this.twepoch = 0;
+        this.workerIdBits = 5;
+        this.dataCenterIdBits = 5;
+        this.maxWrokerId = -1 ^ (-1 << this.workerIdBits); // 值为：31
+        this.maxDataCenterId = -1 ^ (-1 << this.dataCenterIdBits); // 值为：31
+        this.sequenceBits = 12;
         this.workerIdShift = this.sequenceBits; // 值为：12
         this.dataCenterIdShift = this.sequenceBits + this.workerIdBits; // 值为：17
         this.timestampLeftShift = this.sequenceBits + this.workerIdBits + this.dataCenterIdBits; // 值为：22
-        this.sequenceMask = -1n ^ (-1n << this.sequenceBits); // 值为：4095
-        this.lastTimestamp = -1n;
+        this.sequenceMask = -1 ^ (-1 << this.sequenceBits); // 值为：4095
+        this.lastTimestamp = -1;
         //设置默认值,从环境变量取
-        this.workerId = 1n;
-        this.dataCenterId = 1n;
-        this.sequence = 0n;
+        this.workerId = 1;
+        this.dataCenterId = 1;
+        this.sequence = 0;
         if (this.workerId > this.maxWrokerId || this.workerId < 0) {
             throw new Error('_workerId must max than 0 and small than maxWrokerId-[' + this.maxWrokerId + ']');
         }
@@ -47,12 +47,12 @@ export const Snowflake = /** @class */ (function() {
                 (this.lastTimestamp - timestamp));
         }
         if (this.lastTimestamp === timestamp) {
-            this.sequence = (this.sequence + 1n) & this.sequenceMask;
-            if (this.sequence === 0n) {
+            this.sequence = (this.sequence + 1) & this.sequenceMask;
+            if (this.sequence === 0) {
                 timestamp = this.tilNextMillis(this.lastTimestamp);
             }
         } else {
-            this.sequence = 0n;
+            this.sequence = 0;
         }
         this.lastTimestamp = timestamp;
         return ((timestamp - this.twepoch) << this.timestampLeftShift) |
@@ -67,21 +67,17 @@ export const Snowflake = /** @class */ (function() {
                 (this.lastTimestamp - timestamp));
         }
         if (this.lastTimestamp === timestamp) {
-            this.sequence = (this.sequence + 1n) & this.sequenceMask;
-            if (this.sequence === 0n) {
+            this.sequence = (this.sequence + 1) & this.sequenceMask;
+            if (this.sequence === 0) {
                 timestamp = this.tilNextMillis(this.lastTimestamp);
             }
         } else {
-            this.sequence = 0n;
+            this.sequence = 0;
         }
-        this.lastTimestamp = timestamp;
-        let id = ((timestamp - this.twepoch) << this.timestampLeftShift) |
-            (this.dataCenterId << this.dataCenterIdShift) |
-            (this.workerId << this.workerIdShift) |
-            this.sequence;
-        return BigInt(id).toString()
+
+        return new Date().getTime().toString() +  this.sequence.toString()
     };
     return Snowflake;
 }());
 
-var tempSnowflake = new Snowflake(1n, 1n, 0n);
+var tempSnowflake = new Snowflake(1, 1, 0);

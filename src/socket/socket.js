@@ -4,7 +4,7 @@ function SocketClient() {
     // 监听池
     let listenerPool = new Array(10)
     // socket对象
-    let socket = null;
+    var socket;
     // 预设5个启动监听池大小
     let openListenerPool = new Array(5)
     // 当前连接状态
@@ -18,7 +18,7 @@ function SocketClient() {
 
     let translatorImpl;
 
-    let snowflake = new Snowflake(1n, 1n, 0n);
+    let snowflake = new Snowflake(1, 1, 0);
 
     this.setAddress = function (address) {
         socketAddress = address
@@ -33,7 +33,7 @@ function SocketClient() {
      */
     this.bindMessageListener = function (listener) {
 
-        listenerPool.add(listener)
+        listenerPool.push(listener)
     }
     /**
      * 绑定连接建立监听器
@@ -41,7 +41,7 @@ function SocketClient() {
      */
     this.bindOpenListener = function (listener) {
 
-        openListenerPool.add(listener)
+        openListenerPool.push(listener)
     }
     /**
      * 连接方法
@@ -99,9 +99,7 @@ function SocketClient() {
     this.onOpen = function () {
         console.log("socket连接成功")
         status = WebSocket.OPEN
-        for (let listener in openListenerPool) {
-            listener.post()
-        }
+        openListenerPool.forEach(func => func.call(null))
     }
 
     /**
@@ -119,9 +117,9 @@ function SocketClient() {
      * @param msg
      */
     this.onMessage = function (msg) {
-        for (let listener in listenerPool) {
-            listener.call(msg)
-        }
+        console.log(msg)
+        listenerPool.forEach(func => func.call(msg))
+
     }
 
     /**
@@ -130,9 +128,8 @@ function SocketClient() {
      */
     this.send = function (message) {
 
-        this.write(message)
+        this.write(this.wrapMessage(message))
     }
-
 
 
     /**
@@ -153,21 +150,21 @@ function SocketClient() {
 
     this.wrapMessage = function (message) {
 
-        let body = translatorImpl.tobyte(message)
-        let translator = message.translator || 1;
+        let payload = translatorImpl.toStr(message.payload)
+        let translator = message.translator || 16;
         let inLabel = message.inLabel || 0;
         let ack = message.ack || 0;
         let qos = message.qos || 0;
         let cmd = message.cmd;
         let messageId = message.messageId || snowflake.getId();
-        return translator + ',' + inLabel + ',' + ack + ',' + qos + ',' + cmd + ',' + messageId + ',' + body
+        return translator + ',' + inLabel + ',' + ack + ',' + qos + ',' + cmd + ',' + messageId + ',' + payload
     }
     /**
      * 发送消息
      * @param message 消息体
      */
     this.write = function (message) {
-        socket.send(this.wrapMessage(message));
+        socket.send(message);
     }
 }
 
@@ -180,9 +177,14 @@ function SocketClient() {
 function Listener(listener) {
 
     // 回调post方法
-    function call(message) {
-        listener.post(message)
+    this.call = function (message) {
+        listener(message)
     }
 
+}
+
+export {
+    SocketClient,
+    Listener
 }
 
