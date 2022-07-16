@@ -1,15 +1,20 @@
 <template>
   <div class="um_header">
-    <div class="um-name">DaWens(32)</div>
+    <div class="um-name">{{nowChat? nowChat.contactName : null}}</div>
   </div>
 </template>
 
 <script>
 export default {
   name: "usermeta",
+  props :['nowChat'],
   data() {
-    return {}
-  }
+    return {
+      nowChatVal : undefined
+    }
+  },
+
+
 }
 </script>
 

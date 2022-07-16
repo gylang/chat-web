@@ -56,34 +56,44 @@
 <script>
 export default {
   name: "message",
+  props: {
+    nowChat : {
+      type : Object
+    }
+  },
   data() {
     return {
       me: 'GiLang',
-      messageList: [
+      messageList: []
+    }
+
+  }, methods: {
+    load() {
+    },
+    changeNowChat(nowChat) {
+
+      this.messageList = [
         {
-          content: '达文西, 很高兴认识你!',
+          content: `${nowChat.contactName}, 很高兴认识你!`,
           sender: 'GiLang',
 
         }, {
           content: '你好呀GiLang!',
-          sender: 'DaWens',
+          sender: nowChat.contactName,
         }, {
           content: '听说你这里有大飞的专辑?',
-          sender: 'DaWens',
+          sender: nowChat.contactName,
         }, {
           content: '是的, 我这里有这个喜仔的专辑, 你想要哪一个?',
           sender: 'GiLang',
         }, {
           content: '不是。“喜仔”在广东话中的意思是“喜儿子”，是表达对孩子的喜欢，也被情侣们用来介绍男朋友或作为爱称，但并没有死子的意思，“死子”在广东话中是骂人的语言。不是。“喜仔”在广东话中的意思是“喜儿子”，是表达对孩子的喜欢，也被情侣们用来介绍男朋友或作为爱称，但并没有死子的意思，“死子”在广东话中是骂人的语言。',
-          sender: 'DaWens',
+          sender: nowChat.contactName,
         }
       ]
     }
+  },
 
-  }, methods: {
-    load() {
-    }
-  }
 }
 </script>
 

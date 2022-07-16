@@ -18,12 +18,13 @@
           <ul class="infinite-list padding-0 margin-left-5 nowChatList" v-infinite-scroll="loadNowChatList"
               style="overflow:auto">
             <!--      当前联系信息      -->
-            <el-row v-for="nowChat in nowChatList" style="margin-left: 0" class="infinite-list-item margin-0 nowChatItem">
-              <div >
+            <el-row v-for="nowChat in nowChatList" style="margin-left: 0"
+                    class="infinite-list-item margin-0 nowChatItem">
+              <div @click="changeNowChat(nowChat)" :class="nowChat.contactId === selectedNowChat.contactId ? 'selectNowChat h-60' : 'h-60'">
                 <div>
                   <el-avatar class="float-left" shape="square" :size="50" :src="nowChat.avatar"></el-avatar>
                 </div>
-                <div class="float-left h-20">DaWenx</div>
+                <div class="float-left h-20">{{ nowChat.contactName }}</div>
                 <div class="float-right margin-right-5 h-20">{{
                     nowChat.timestamp|formatDate('yyyy-MM-dd HH:mm:ss')
                   }}
@@ -41,11 +42,11 @@
     <div class="chat-tab">
       <!--    头部显示  -->
       <div class="chat-header">
-        <usermeta/>
+        <usermeta :nowChat="selectedNowChat"/>
       </div>
       <!--   内容区   -->
       <div class="chat-content">
-        <message/>
+        <message ref="messageRef"/>
       </div>
       <!--    发送区  -->
       <div class="chat-send-tab">
@@ -86,100 +87,114 @@ export default {
     return {
       inputText: '',
       searchInput: null,
+      selectedNowChat: null,
       nowChatList: [
         {
           contactId: 1,
-          contactName: 'DaWenx',
+          contactName: '冰山蝶雨',
           avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
           message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
+          timestamp: 1657632888846,
+          num: 4512
+        }, {
+          contactId: 2,
+          contactName: '新萝卜蹲',
           avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
           message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
+          timestamp: 1657632888846,
+          num: 421
+        }, {
+          contactId: 3,
+          contactName: '起床困难户',
+          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          message: 'GiLang你好, 现在有空?...',
+          timestamp: 1657632888846,
+          num: 124
+        }, {
+          contactId: 4,
+          contactName: '舍不得五个萌娃@',
+          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          message: 'GiLang你好, 现在有空?...',
+          timestamp: 1657632888846,
+          num: 54
+        }, {
+          contactId: 5,
+          contactName: '春日终章',
+          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          message: 'GiLang你好, 现在有空?...',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 6,
+          contactName: '^你和喵',
           avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
           message: 'GiLang你好, 现在有空?...',
           timestamp: 1657632888846
         }, {
-          contactId: 1,
-          contactName: 'DaWenx',
+          contactId: 7,
+          contactName: '爱洗澡的跳跳虎',
           avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
           message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 8,
+          contactName: '奶包妹纸ε么哒哒∩_∩',
           avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
           message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 9,
+          contactName: '我来自熊猫星',
           avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
           message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 10,
+          contactName: '不过一场颠覆',
+          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          message: 'GiLang你好, 现在有空?...',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 11,
+          contactName: '初懵',
+          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          message: 'GiLang你好, 现在有空?...',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 12,
+          contactName: '可愛到飞起',
+          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          message: 'GiLang你好, 现在有空?...',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 13,
+          contactName: '校服一穿就变乖',
+          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          message: 'GiLang你好, 现在有空?...',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 14,
+          contactName: '草莓ぇ宝',
+          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          message: 'GiLang你好, 现在有空?...',
+          timestamp: 1657632888846,
+          num: 523
+        }, {
+          contactId: 15,
+          contactName: '麦兜兜',
           avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
           message: 'GiLang你好, 现在有空?...',
           timestamp: 1657632888846
         }, {
-          contactId: 1,
-          contactName: 'DaWenx',
-          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
-          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
-          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
-          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        }, {
-          contactId: 1,
-          contactName: 'DaWenx',
-          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
-          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
-          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        },{
-          contactId: 1,
-          contactName: 'DaWenx',
-          avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          message: 'GiLang你好, 现在有空?...',
-          timestamp: 1657632888846
-        }, {
-          contactId: 1,
-          contactName: 'DaWenx',
+          contactId: 16,
+          contactName: '酒醒梦断',
           avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
           message: 'GiLang你好, 现在有空?...',
           timestamp: 1657632888846
@@ -190,6 +205,10 @@ export default {
   },
   methods: {
     loadNowChatList() {
+    },
+    changeNowChat(nowChat) {
+      this.selectedNowChat = nowChat;
+      this.$refs.messageRef.changeNowChat(nowChat)
     }
   }
 }
@@ -276,11 +295,17 @@ export default {
   margin-left: 5px;
   text-align: center;
 }
-.nowChatItem{
+
+.nowChatItem {
   width: 310px;
   border-bottom: 1px solid;
 }
-.nowChatList{
+
+.nowChatList {
   height: 695px;
+}
+.selectNowChat {
+
+  background-color: #e7ecf1;
 }
 </style>
