@@ -20,7 +20,8 @@
             <!--      当前联系信息      -->
             <el-row v-for="nowChat in nowChatList" style="margin-left: 0"
                     class="infinite-list-item margin-0 nowChatItem">
-              <div @click="changeNowChat(nowChat)" :class="nowChat.contactId === selectedNowChat.contactId ? 'selectNowChat h-60' : 'h-60'">
+              <div @click="changeNowChat(nowChat)"
+                   :class="(selectedNowChat && nowChat.contactId === selectedNowChat.contactId) ? 'selectNowChat h-60' : 'h-60'">
                 <div>
                   <el-avatar class="float-left" shape="square" :size="50" :src="nowChat.avatar"></el-avatar>
                 </div>
@@ -304,6 +305,7 @@ export default {
 .nowChatList {
   height: 695px;
 }
+
 .selectNowChat {
 
   background-color: #e7ecf1;

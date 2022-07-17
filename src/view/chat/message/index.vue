@@ -70,27 +70,30 @@ export default {
   }, methods: {
     load() {
     },
-    changeNowChat(nowChat) {
+    changeNowChat(nowChatVal) {
+      console.log(!this.nowChat)
+      if (!this.nowChat || this.nowChat.contactId !== nowChatVal.contactId) {
+        this.messageList = [
+          {
+            content: `${nowChatVal.contactName}, 很高兴认识你!`,
+            sender: 'GiLang',
 
-      this.messageList = [
-        {
-          content: `${nowChat.contactName}, 很高兴认识你!`,
-          sender: 'GiLang',
+          }, {
+            content: '你好呀GiLang!',
+            sender: nowChatVal.contactName,
+          }, {
+            content: '听说你这里有大飞的专辑?',
+            sender: nowChatVal.contactName,
+          }, {
+            content: '是的, 我这里有这个喜仔的专辑, 你想要哪一个?',
+            sender: 'GiLang',
+          }, {
+            content: '不是。“喜仔”在广东话中的意思是“喜儿子”，是表达对孩子的喜欢，也被情侣们用来介绍男朋友或作为爱称，但并没有死子的意思，“死子”在广东话中是骂人的语言。不是。“喜仔”在广东话中的意思是“喜儿子”，是表达对孩子的喜欢，也被情侣们用来介绍男朋友或作为爱称，但并没有死子的意思，“死子”在广东话中是骂人的语言。',
+            sender: nowChatVal.contactName,
+          }
+        ]
+      }
 
-        }, {
-          content: '你好呀GiLang!',
-          sender: nowChat.contactName,
-        }, {
-          content: '听说你这里有大飞的专辑?',
-          sender: nowChat.contactName,
-        }, {
-          content: '是的, 我这里有这个喜仔的专辑, 你想要哪一个?',
-          sender: 'GiLang',
-        }, {
-          content: '不是。“喜仔”在广东话中的意思是“喜儿子”，是表达对孩子的喜欢，也被情侣们用来介绍男朋友或作为爱称，但并没有死子的意思，“死子”在广东话中是骂人的语言。不是。“喜仔”在广东话中的意思是“喜儿子”，是表达对孩子的喜欢，也被情侣们用来介绍男朋友或作为爱称，但并没有死子的意思，“死子”在广东话中是骂人的语言。',
-          sender: nowChat.contactName,
-        }
-      ]
     }
   },
 
