@@ -10,6 +10,7 @@ import './css/comm.css'
 import filter from './util/datefilter'
 import {Listener, SocketClient} from "~/socket/socket";
 import {JsonTranslator} from "~/socket/translator";
+import {MessageService} from "~/db/message_service";
 
 for (const key in filter) {
     Vue.filter(key, filter[key]);
@@ -19,14 +20,16 @@ for (const key in filter) {
 const socketClient = new SocketClient();
 socketClient.setAddress("ws://127.0.0.1:9721")
 socketClient.setTranslator(new JsonTranslator())
-socketClient.bindOpenListener( function (message) {
-     socketClient.send({
+socketClient.bindOpenListener(function (message) {
+    socketClient.send({
         cmd: 1,
         payload: '用户' + new Date().getTime()
     })
 })
-socketClient.connect()
+// 调试 indexedDB 不需要
+// socketClient.connect()
 Vue.prototype.socketClient = socketClient
+Vue.prototype.messageService = new MessageService()
 Vue.use(ElementUI)
 new Vue({
     el: '#app',

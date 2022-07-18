@@ -18,7 +18,8 @@ module.exports = (options = {}) => ({
     publicPath: options.dev ? '/assets/' : publicPath
   },
   module: {
-    rules: [{
+    rules: [
+        {
         test: /\.vue$/,
         use: ['vue-loader']
       },

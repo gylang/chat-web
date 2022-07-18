@@ -44,10 +44,9 @@ export default {
       console.log(this.students)
 
 
-
     },
     async add() {
-      await this.messageService.addMessage({
+      this.messageService.addMessage({
         msgId: '1658067055942',
         sender: 'GiLang',
         receive: 'DaWenX',
@@ -55,6 +54,12 @@ export default {
         'content': '你好',
         timestamp: 1658067055942,
         success: true
+      }).catch(reason => {
+        console.log("messageService.addMessage - 执行错误")
+        console.log(reason)
+      }).then(value => {
+        console.log("messageService.addMessage - 执行成功")
+        console.log(value)
       })
       console.log('addMessage result')
 
