@@ -1,4 +1,4 @@
-import {Snowflake} from "~/util/msgId";
+import {Snowflake} from "../util/msgId";
 
 function SocketClient() {
     // 监听池
@@ -18,7 +18,7 @@ function SocketClient() {
 
     let translatorImpl;
 
-    let snowflake = new Snowflake(1, 1, 0);
+    let snowflake = new Snowflake();
 
     this.setAddress = function (address) {
         socketAddress = address
@@ -156,8 +156,12 @@ function SocketClient() {
         let ack = message.ack || 0;
         let qos = message.qos || 0;
         let cmd = message.cmd;
-        let messageId = message.messageId || snowflake.getId();
+        let messageId = message.messageId || this.nextId();
         return translator + ',' + inLabel + ',' + ack + ',' + qos + ',' + cmd + ',' + messageId + ',' + payload
+    }
+
+    this.nextId = function () {
+        return snowflake.nextId()
     }
     /**
      * 发送消息

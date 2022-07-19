@@ -18,7 +18,7 @@
           <ul class="infinite-list padding-0 margin-left-5 nowChatList" v-infinite-scroll="loadNowChatList"
               style="overflow:auto">
             <!--      当前联系信息      -->
-            <el-row v-for="nowChat in nowChatList" style="margin-left: 0"
+            <el-row v-for="nowChat in nowChatList" :key="nowChat.contactId" style="margin-left: 0"
                     class="infinite-list-item margin-0 nowChatItem">
               <div @click="changeNowChat(nowChat)"
                    :class="(selectedNowChat && nowChat.contactId === selectedNowChat.contactId) ? 'selectNowChat h-60' : 'h-60'">
@@ -73,8 +73,8 @@
 
 <script>
 import * as dayjs from 'dayjs'
-import Usermeta from "~/view/chat/usermeta";
-import Message from "~/view/chat/message";
+import Usermeta from "../../components/usermeta";
+import Message from "../../components/message";
 
 export default {
 
@@ -102,7 +102,113 @@ export default {
     }
   },
   created() {
-    this.nowChatList = this.messageService.recentlyMessage()
+    this.nowChatList = this.recentlyService.recentlyPage({}).then(value => {
+
+      if (!value || value.length <= 0) {
+        this.nowChatList = [
+          {
+            contactId: '1',
+            contactName: '冰山蝶雨',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            timestamp: '1657632888846',
+            num: 4512
+          }, {
+            contactId: '2',
+            contactName: '新萝卜蹲',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            timestamp: '1657632888846',
+            num: 421
+          }, {
+            contactId: '3',
+            contactName: '起床困难户',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            timestamp: '1657632888846',
+            num: 124
+          }, {
+            contactId: '4',
+            contactName: '舍不得五个萌娃@',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            timestamp: '1657632888846',
+            num: 54
+          }, {
+            contactId: '5',
+            contactName: '春日终章',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            timestamp: '1657632888846',
+            num: 523
+          }, {
+            contactId: '6',
+            contactName: '^你和喵',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            timestamp: '1657632888846'
+          }, {
+            contactId: '7',
+            contactName: '爱洗澡的跳跳虎',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            timestamp: '1657632888846',
+            num: 523
+          }, {
+            contactId: '8',
+            contactName: '奶包妹纸ε么哒哒∩_∩',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            timestamp: '1657632888846',
+            num: 523
+          }, {
+            contactId: '9',
+            contactName: '我来自熊猫星',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            num: 523
+          }, {
+            contactId: '10',
+            contactName: '不过一场颠覆',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            num: 523
+          }, {
+            contactId: '11',
+            contactName: '初懵',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            num: 523
+          }, {
+            contactId: '12',
+            contactName: '可愛到飞起',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            num: 523
+          }, {
+            contactId: '13',
+            contactName: '校服一穿就变乖',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            num: 523
+          }, {
+            contactId: '14',
+            contactName: '草莓ぇ宝',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+            num: 523
+          }, {
+            contactId: '15',
+            contactName: '麦兜兜',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          }, {
+            contactId: '16',
+            contactName: '酒醒梦断',
+            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
+          },
+        ]
+        this.recentlyService.addRecentlyBatch(this.nowChatList)
+      } else {
+        this.nowChatList = value;
+      }
+      // 查询消息
+      for (let nc of this.nowChatList) {
+        this.messageService.currentMessage(nc.contactId).then(c => {
+          if (c && c.length > 0) {
+            nc['timestamp'] = c[0].timestamp
+            if (c[0].content) {
+              nc['message'] = c[0].content.substr(0, 20)
+            }
+          }
+        })
+      }
+    })
   }
 }
 </script>

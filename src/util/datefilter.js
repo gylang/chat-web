@@ -1,5 +1,8 @@
 const filter = {
     formatDate: function (value, args) {
+        if(typeof value ==='string'){
+            value=Number(value);
+        }
         var dt = new Date(value);
         if (args === 'yyyy-M-d') {// yyyy-M-d
             let year = dt.getFullYear();

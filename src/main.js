@@ -8,9 +8,10 @@ import 'lib-flexible/flexible.js'
 import './util/rem'
 import './css/comm.css'
 import filter from './util/datefilter'
-import {Listener, SocketClient} from "~/socket/socket";
-import {JsonTranslator} from "~/socket/translator";
-import {MessageService} from "~/db/message_service";
+import {Listener, SocketClient} from "./socket/socket";
+import {JsonTranslator} from "./socket/translator";
+import {MessageService} from "./db/message_service";
+import {RecentlyService} from "./db/recently_service";
 
 for (const key in filter) {
     Vue.filter(key, filter[key]);
@@ -30,6 +31,7 @@ socketClient.bindOpenListener(function (message) {
 // socketClient.connect()
 Vue.prototype.socketClient = socketClient
 Vue.prototype.messageService = new MessageService()
+Vue.prototype.recentlyService = new RecentlyService()
 Vue.use(ElementUI)
 new Vue({
     el: '#app',

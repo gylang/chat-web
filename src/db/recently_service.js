@@ -1,12 +1,12 @@
 import {connection} from "./jsstore_con";
 
-export class MessageService {
+export class RecentlyService {
 
     constructor() {
-        this.tableName = "tb_message";
+        this.tableName = "tb_recently";
     }
 
-    addMessage(message) {
+    addRecently(recently) {
 
         return connection.insert({
             into: this.tableName,
@@ -14,31 +14,30 @@ export class MessageService {
             return: true
         })
     }
-    addMessageBatch(messages) {
-
+    addRecentlyBatch(recently) {
+        for (let r of recently) {
+            r['timestamp'] = Date.now()
+        }
         return connection.insert({
             into: this.tableName,
-            values: messages,
+            values: recently,
             return: true
         })
     }
 
-    getMessagesByContact(query) {
+    recentlyPage(query) {
         return connection.select({
             from: this.tableName,
-            where: {
-                contact: query.contact
-            },
             limit: query.limit,
             skip: query.skip
         })
     }
 
-    updateSuccessById(id) {
+    updateTimestampById(id) {
         return connection.update({
             in: this.tableName,
             set: {
-                success: true
+                timestamp: Date.now()
             },
             where: {
                 id: id
@@ -46,16 +45,4 @@ export class MessageService {
         })
     }
 
-    currentMessage(contactId) {
-        return connection.select({
-            from: this.tableName,
-            where: {
-                contact: contactId
-            },
-            order : {
-                by: 'timestamp',
-                type : 'desc'
-            }
-        })
-    }
 }

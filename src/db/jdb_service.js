@@ -33,8 +33,8 @@ const getDatabase = () => {
             },
             // 时间
             timestamp: {
-                dataType: DATA_TYPE.String,
-                notNull: true
+                dataType: DATA_TYPE.Number,
+                notNull: true,
             },
             success: {
                 dataType: DATA_TYPE.Boolean,
@@ -43,14 +43,42 @@ const getDatabase = () => {
             }
         }
     };
+
+    const tb_recently = {
+        name: 'tb_recently',
+        columns: {
+
+            //所属联系人
+            contactId: {
+                dataType: DATA_TYPE.String,
+                notNull: true,
+            },
+            // 内容
+            contactName: {
+                notNull: true,
+                dataType: DATA_TYPE.String
+            },// 内容
+            avatar: {
+                notNull: true,
+                dataType: DATA_TYPE.String
+            },
+            // 时间
+            timestamp: {
+                dataType: DATA_TYPE.Number,
+                notNull: true,
+                default: Date.now()
+            }
+        }
+    };
     const dataBase = {
         name: "GiLang",
-        tables: [tb_message]
+        tables: [tb_message, tb_recently]
     };
     return dataBase;
 };
 
 export const initJsStore = async () => {
     const dataBase = getDatabase();
+    console.log(dataBase)
     return await connection.initDb(dataBase);
 };
