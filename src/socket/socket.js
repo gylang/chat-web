@@ -32,7 +32,7 @@ function SocketClient() {
      * @param listener 监听器
      */
     this.bindMessageListener = function (listener) {
-
+        console.log(listener)
         listenerPool.push(listener)
     }
     /**

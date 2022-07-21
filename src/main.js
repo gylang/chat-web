@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import 'alice-poptip/src/poptip.css'
+import 'element-ui/lib/theme-chalk/index.css';
+// import 'alice-poptip/src/poptip.css'
 import App from './App.vue'
 import {router} from './router'
 import 'lib-flexible/flexible.js'
@@ -28,7 +28,7 @@ socketClient.bindOpenListener(function (message) {
     })
 })
 // 调试 indexedDB 不需要
-// socketClient.connect()
+socketClient.connect()
 Vue.prototype.socketClient = socketClient
 Vue.prototype.messageService = new MessageService()
 Vue.prototype.recentlyService = new RecentlyService()

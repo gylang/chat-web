@@ -5,7 +5,32 @@
     <div class="contact-tab">
 
       <div class="function-tab">
-        <el-avatar class="margin-left-5 margin-top-10" shape="square" :size="50" :src="meAvatar"></el-avatar>
+        <el-avatar v-if="auth" class="margin-left-5 margin-top-10" fit="scale-down" shape="square" :size="50"
+                   :src="meAvatar"></el-avatar>
+        <el-avatar v-else class="margin-left-5 margin-top-10" shape="square" fit="scale-down" :size="50"
+                   :src="loginAvatar" @click.native="openLoginOrRegisterDialog = true"></el-avatar>
+
+
+        <el-dialog
+            :title="loginRegisterDialogFlag? '登录' : '注册'"
+            :visible.sync="openLoginOrRegisterDialog"
+            width="300"
+        >
+          <el-form>
+            <el-form-item label="用户名">
+              <el-input v-model="loginOrRegisterForm.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+              <el-input v-model="loginOrRegisterForm.password"></el-input>
+            </el-form-item>
+            <el-form-item label="昵称">
+              <el-input v-model="loginOrRegisterForm.nickname"></el-input>
+            </el-form-item>
+          </el-form>
+          <el-button @click="loginRegisterDialogFlag = false">取 消</el-button>
+          <el-button type="primary" @click="loginRegisterFunction">确 定</el-button>
+        </el-dialog>
+
       </div>
       <!--    联系人栏目  -->
       <div class="contact-list-tab">
@@ -72,9 +97,9 @@
 </template>
 
 <script>
-import * as dayjs from 'dayjs'
 import Usermeta from "../../components/usermeta";
 import Message from "../../components/message";
+import loginAvatar from "../../assets/login_avatar.png";
 
 export default {
 
@@ -88,9 +113,14 @@ export default {
     return {
       inputText: '',
       searchInput: null,
+      auth: false,
       selectedNowChat: null,
       nowChatList: [],
-      meAvatar: "https://img0.baidu.com/it/u=1694074520,2517635995&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500"
+      loginAvatar: loginAvatar,
+      meAvatar: "https://img0.baidu.com/it/u=1694074520,2517635995&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500",
+      openLoginOrRegisterDialog: false,
+      loginRegisterDialogFlag: true,
+      loginOrRegisterForm: {}
     }
   },
   methods: {
@@ -99,6 +129,30 @@ export default {
     changeNowChat(nowChat) {
       this.selectedNowChat = nowChat;
       this.$refs.messageRef.changeNowChat(nowChat)
+    },
+    loginRegisterFunction() {
+      if (this.loginRegisterDialogFlag) {
+        if (this.loginOrRegisterForm.username && this.loginOrRegisterForm.password) {
+          this.socketClient.send({
+            cmd: 2,
+            payload: this.loginOrRegisterForm
+          })
+          return
+        }
+      } else {
+        if (this.loginOrRegisterForm.username && this.loginOrRegisterForm.password && this.loginOrRegisterForm.nickname) {
+          this.socketClient.send({
+            cmd: 4,
+            payload: this.loginOrRegisterForm
+          })
+        }
+        return;
+      }
+      this.$notify({
+        title: '校验失败',
+        message: '用户名/密码' + this.loginRegisterDialogFlag ? '' : '/密码' + '不能为空',
+        type: 'warning'
+      });
     }
   },
   created() {
@@ -112,86 +166,7 @@ export default {
             avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
             timestamp: '1657632888846',
             num: 4512
-          }, {
-            contactId: '2',
-            contactName: '新萝卜蹲',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            timestamp: '1657632888846',
-            num: 421
-          }, {
-            contactId: '3',
-            contactName: '起床困难户',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            timestamp: '1657632888846',
-            num: 124
-          }, {
-            contactId: '4',
-            contactName: '舍不得五个萌娃@',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            timestamp: '1657632888846',
-            num: 54
-          }, {
-            contactId: '5',
-            contactName: '春日终章',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            timestamp: '1657632888846',
-            num: 523
-          }, {
-            contactId: '6',
-            contactName: '^你和喵',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            timestamp: '1657632888846'
-          }, {
-            contactId: '7',
-            contactName: '爱洗澡的跳跳虎',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            timestamp: '1657632888846',
-            num: 523
-          }, {
-            contactId: '8',
-            contactName: '奶包妹纸ε么哒哒∩_∩',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            timestamp: '1657632888846',
-            num: 523
-          }, {
-            contactId: '9',
-            contactName: '我来自熊猫星',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            num: 523
-          }, {
-            contactId: '10',
-            contactName: '不过一场颠覆',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            num: 523
-          }, {
-            contactId: '11',
-            contactName: '初懵',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            num: 523
-          }, {
-            contactId: '12',
-            contactName: '可愛到飞起',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            num: 523
-          }, {
-            contactId: '13',
-            contactName: '校服一穿就变乖',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            num: 523
-          }, {
-            contactId: '14',
-            contactName: '草莓ぇ宝',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-            num: 523
-          }, {
-            contactId: '15',
-            contactName: '麦兜兜',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          }, {
-            contactId: '16',
-            contactName: '酒醒梦断',
-            avatar: 'https://img1.baidu.com/it/u=1016138010,1907110459&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=500',
-          },
+          }
         ]
         this.recentlyService.addRecentlyBatch(this.nowChatList)
       } else {
@@ -209,6 +184,9 @@ export default {
         })
       }
     })
+  },
+  destroyed() {
+    this.socketClient.bindMessageListener()
   }
 }
 </script>
